@@ -1,59 +1,205 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Workout API 💪
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+API RESTful para gerenciamento de treinos e exercícios, desenvolvida com **Laravel 12** e autenticação via **Sanctum**.
 
-## About Laravel
+## 🚀 Tecnologias
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+- **PHP 8.2+**
+- **Laravel 12**
+- **SQLite** (desenvolvimento)
+- **Laravel Sanctum** (autenticação)
+- **Laravel Factories** (dados de teste)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## 📋 Pré-requisitos
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- PHP 8.2+
+- Composer
+- SQLite
 
-## Learning Laravel
+## ⚙️ Instalação
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+**1. Clone o repositório**
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+```bash
+git clone https://github.com/Uzzoper/workout-api.git
+cd workout-api
+```
 
-## Laravel Sponsors
+**2. Instale as dependências**
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+```bash
+composer install
+```
 
-### Premium Partners
+**3. Configure o ambiente**
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+```bash
+cp .env.example .env
+php artisan key:generate
+```
 
-## Contributing
+**4. Execute as migrações**
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```bash
+php artisan migrate
+```
 
-## Code of Conduct
+**5. Inicie o servidor**
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+php artisan serve
+```
 
-## Security Vulnerabilities
+A API estará disponível em `http://localhost:8000`
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
 
-## License
+## 🔐 Autenticação
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+A API utiliza **Laravel Sanctum** com tokens Bearer.
+
+### Endpoints Públicos
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `POST` | `/api/v1/register` | Registrar novo usuário |
+| `POST` | `/api/v1/login` | Fazer login |
+
+### Endpoints Protegidos (requer token)
+
+Adicione o header em todas as requisições:
+
+```
+Authorization: Bearer {seu_token}
+```
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `POST` | `/api/v1/logout` | Fazer logout |
+| `GET` | `/api/v1/me` | Dados do usuário logado |
+
+---
+
+## 🏋️ Treinos (Workouts)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `GET` | `/api/v1/workouts` | Listar todos os treinos |
+| `POST` | `/api/v1/workouts` | Criar novo treino |
+| `GET` | `/api/v1/workouts/{id}` | Ver detalhes do treino |
+| `PUT` | `/api/v1/workouts/{id}` | Atualizar treino |
+| `DELETE` | `/api/v1/workouts/{id}` | Deletar treino |
+
+**Exemplo de criação:**
+
+```http
+POST /api/v1/workouts
+```
+
+```json
+{
+    "name": "Treino de Peito",
+    "description": "Foco em peitoral",
+    "scheduled_date": "2026-02-20"
+}
+```
+
+---
+
+## 🏃 Exercícios (Exercises)
+
+| Método | Endpoint | Descrição |
+|--------|----------|-----------|
+| `GET` | `/api/v1/workouts/{id}/exercises` | Listar exercícios do treino |
+| `POST` | `/api/v1/workouts/{id}/exercises` | Adicionar exercício ao treino |
+| `PUT` | `/api/v1/exercises/{id}` | Atualizar exercício |
+| `DELETE` | `/api/v1/exercises/{id}` | Deletar exercício |
+
+**Exemplo de criação:**
+
+```http
+POST /api/v1/workouts/1/exercises
+```
+
+```json
+{
+    "name": "Supino Reto",
+    "sets": 4,
+    "reps": 12,
+    "weight": 60.5,
+    "rest_time": 90,
+    "notes": "Manter postura"
+}
+```
+
+---
+
+## 🧪 Testes com Factories
+
+Crie dados de teste rapidamente:
+
+```bash
+php artisan tinker
+```
+
+```php
+// Criar usuário com 2 treinos e 3 exercícios cada
+$user = \App\Models\User::factory()->has(
+    \App\Models\Workout::factory()->count(2)->has(
+        \App\Models\Exercise::factory()->count(3)
+    )
+)->create();
+
+// Ver dados criados
+$user->email;
+$user->workouts;
+```
+
+---
+
+## 📁 Estrutura do Projeto
+
+```
+workout-api/
+├── app/
+│   ├── Http/Controllers/
+│   │   ├── AuthController.php      # Autenticação
+│   │   ├── WorkoutController.php   # CRUD de treinos
+│   │   └── ExerciseController.php  # CRUD de exercícios
+│   └── Models/
+│       ├── User.php
+│       ├── Workout.php
+│       └── Exercise.php
+├── database/
+│   ├── factories/                  # Factories para testes
+│   └── migrations/                 # Migrações do banco
+└── routes/
+    └── api.php                     # Rotas da API
+```
+
+---
+
+## 🔒 Segurança
+
+- Autenticação via tokens Sanctum
+- Usuários só acessam seus próprios dados
+- Validação em todos os endpoints
+- Proteção contra SQL Injection (Eloquent ORM)
+
+---
+
+## 📝 Status do Projeto
+
+✅ **MVP Backend Completo:**
+
+- Autenticação (Sanctum)
+- CRUD de Treinos
+- CRUD de Exercícios
+- Factories para testes
+- Validações e autorizações
+
+---
+
+## 👨‍💻 Autor
+
+**Juan Antonio Peruzzo** — [GitHub](https://github.com/Uzzoper)
