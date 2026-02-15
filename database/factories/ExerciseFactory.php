@@ -17,6 +17,7 @@ class ExerciseFactory extends Factory
     public function definition(): array
     {
         return [
+            'workout_id' => \App\Models\Workout::factory(),
             'name' => $this->faker->word(),
             'sets' => $this->faker->numberBetween(1, 5),
             'reps' => $this->faker->numberBetween(8, 15),

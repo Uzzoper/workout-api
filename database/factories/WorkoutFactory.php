@@ -17,6 +17,7 @@ class WorkoutFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id' => \App\Models\User::factory(),
             'name' => $this->faker->sentence(3),
             'description' => $this->faker->paragraph(),
             'scheduled_date' => $this->faker->date(),
